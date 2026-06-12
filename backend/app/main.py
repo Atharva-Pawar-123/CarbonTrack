@@ -89,3 +89,24 @@ app.include_router(goals.router)
 async def health_check():
     """Simple health check endpoint."""
     return {"status": "healthy"}
+
+
+# --- Static Frontend Serving ---
+# In production, the built frontend is copied into ./static
+import pathlib
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
+
+_static_dir = pathlib.Path(__file__).resolve().parent.parent / "static"
+
+if _static_dir.is_dir():
+    # Serve JS/CSS/image assets
+    app.mount("/assets", StaticFiles(directory=_static_dir / "assets"), name="frontend-assets")
+
+    @app.get("/{full_path:path}")
+    async def serve_frontend(full_path: str):
+        """Catch-all: serve index.html for SPA client-side routing."""
+        file_path = _static_dir / full_path
+        if full_path and file_path.is_file():
+            return FileResponse(file_path)
+        return FileResponse(_static_dir / "index.html")

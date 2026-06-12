@@ -2,7 +2,7 @@ import axios from 'axios';
 import { useAuthStore } from '../hooks/useAuthStore';
 
 // @ts-expect-error: Vite import meta types may not be fully resolved in test env
-const API_BASE = import.meta.env.VITE_API_URL || 'https://carbon-backend-lr2vbncaoq-uc.a.run.app';
+const API_BASE = import.meta.env.VITE_API_URL || '';
 
 // Create an Axios instance
 const api = axios.create({

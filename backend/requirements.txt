@@ -1,0 +1,16 @@
+fastapi
+uvicorn[standard]
+sqlalchemy[asyncio]
+aiosqlite
+pydantic[email]
+pydantic-settings
+python-jose[cryptography]
+passlib[bcrypt]
+python-dotenv
+httpx
+slowapi
+google-generativeai
+pytest
+pytest-asyncio
+pytest-cov
+ruff

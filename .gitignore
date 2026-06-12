@@ -1,0 +1,19 @@
+# Backend
+backend/.env
+backend/carbon_tracker.db
+backend/__pycache__
+backend/.pytest_cache
+backend/htmlcov
+backend/.coverage
+backend/venv/
+
+# Frontend
+frontend/node_modules
+frontend/dist
+frontend/.env.local
+
+# General
+.DS_Store
+*.pyc
+*.pyo
+__pycache__/

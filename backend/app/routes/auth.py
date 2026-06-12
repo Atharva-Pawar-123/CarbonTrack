@@ -29,10 +29,13 @@ from app.schemas.auth import (
 )
 from pydantic import BaseModel
 
+import os
+
 logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/auth", tags=["auth"])
-limiter = Limiter(key_func=get_remote_address)
+limiter_enabled = os.getenv("TESTING", "False").lower() not in ("true", "1", "yes")
+limiter = Limiter(key_func=get_remote_address, enabled=limiter_enabled)
 
 
 class RefreshRequest(BaseModel):

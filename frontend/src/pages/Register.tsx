@@ -1,7 +1,14 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { Leaf, Mail, Lock, User as UserIcon, Loader2, CheckCircle2, XCircle } from 'lucide-react';
+import { CheckCircle2, XCircle, Leaf, Mail, Lock, User as UserIcon, Loader2 } from 'lucide-react';
 import api from '../services/api';
+
+const RequirementItem = ({ met, text }: { met: boolean; text: string }) => (
+  <div className={`flex items-center text-xs ${met ? 'text-green-600' : 'text-neutral-500'}`}>
+    {met ? <CheckCircle2 className="w-3 h-3 mr-1" /> : <XCircle className="w-3 h-3 mr-1" />}
+    {text}
+  </div>
+);
 
 export default function Register() {
   const [email, setEmail] = useState('');
@@ -45,13 +52,6 @@ export default function Register() {
       setLoading(false);
     }
   };
-
-  const RequirementItem = ({ met, text }: { met: boolean; text: string }) => (
-    <div className={`flex items-center text-xs ${met ? 'text-green-600' : 'text-neutral-500'}`}>
-      {met ? <CheckCircle2 className="w-3 h-3 mr-1" /> : <XCircle className="w-3 h-3 mr-1" />}
-      {text}
-    </div>
-  );
 
   return (
     <div className="flex justify-center items-center min-h-[80vh] py-8">

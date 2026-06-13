@@ -8,7 +8,7 @@ async def test_register_user(async_client: AsyncClient):
     payload = {
         "email": "test@example.com",
         "password": "StrongPassword123!",
-        "display_name": "Test User"
+        "display_name": "Test User",
     }
     response = await async_client.post("/auth/register", json=payload)
     assert response.status_code == 201
@@ -24,7 +24,7 @@ async def test_register_existing_user(async_client: AsyncClient):
     payload = {
         "email": "test2@example.com",
         "password": "StrongPassword123!",
-        "display_name": "Test User 2"
+        "display_name": "Test User 2",
     }
     # Create user
     await async_client.post("/auth/register", json=payload)
@@ -40,7 +40,7 @@ async def test_register_weak_password(async_client: AsyncClient):
     payload = {
         "email": "weakpw@example.com",
         "password": "short",
-        "display_name": "Weak PW User"
+        "display_name": "Weak PW User",
     }
     response = await async_client.post("/auth/register", json=payload)
     assert response.status_code == 422
@@ -52,14 +52,11 @@ async def test_login_user(async_client: AsyncClient):
     payload = {
         "email": "testlogin@example.com",
         "password": "StrongPassword123!",
-        "display_name": "Login User"
+        "display_name": "Login User",
     }
     await async_client.post("/auth/register", json=payload)
 
-    login_payload = {
-        "email": "testlogin@example.com",
-        "password": "StrongPassword123!"
-    }
+    login_payload = {"email": "testlogin@example.com", "password": "StrongPassword123!"}
     response = await async_client.post("/auth/login", json=login_payload)
     assert response.status_code == 200
     data = response.json()
@@ -74,14 +71,14 @@ async def test_login_invalid_credentials(async_client: AsyncClient):
     payload = {
         "email": "testlogin2@example.com",
         "password": "StrongPassword123!",
-        "display_name": "Login User 2"
+        "display_name": "Login User 2",
     }
     await async_client.post("/auth/register", json=payload)
 
-    response = await async_client.post("/auth/login", json={
-        "email": "testlogin2@example.com",
-        "password": "WrongPassword!"
-    })
+    response = await async_client.post(
+        "/auth/login",
+        json={"email": "testlogin2@example.com", "password": "WrongPassword!"},
+    )
     assert response.status_code == 401
     assert "Invalid credentials" in response.json()["detail"]
 
@@ -89,18 +86,23 @@ async def test_login_invalid_credentials(async_client: AsyncClient):
 @pytest.mark.asyncio
 async def test_get_current_user(async_client: AsyncClient):
     """Test the /auth/me endpoint returns the authenticated user."""
-    await async_client.post("/auth/register", json={
-        "email": "meuser@example.com",
-        "password": "StrongPassword123!",
-        "display_name": "Me User"
-    })
-    login_resp = await async_client.post("/auth/login", json={
-        "email": "meuser@example.com",
-        "password": "StrongPassword123!"
-    })
+    await async_client.post(
+        "/auth/register",
+        json={
+            "email": "meuser@example.com",
+            "password": "StrongPassword123!",
+            "display_name": "Me User",
+        },
+    )
+    login_resp = await async_client.post(
+        "/auth/login",
+        json={"email": "meuser@example.com", "password": "StrongPassword123!"},
+    )
     token = login_resp.json()["access_token"]
 
-    response = await async_client.get("/auth/me", headers={"Authorization": f"Bearer {token}"})
+    response = await async_client.get(
+        "/auth/me", headers={"Authorization": f"Bearer {token}"}
+    )
     assert response.status_code == 200
     data = response.json()
     assert data["email"] == "meuser@example.com"
@@ -110,20 +112,23 @@ async def test_get_current_user(async_client: AsyncClient):
 @pytest.mark.asyncio
 async def test_refresh_token(async_client: AsyncClient):
     """Test that a valid refresh token yields a new access token."""
-    await async_client.post("/auth/register", json={
-        "email": "refresh@example.com",
-        "password": "StrongPassword123!",
-        "display_name": "Refresh User"
-    })
-    login_resp = await async_client.post("/auth/login", json={
-        "email": "refresh@example.com",
-        "password": "StrongPassword123!"
-    })
+    await async_client.post(
+        "/auth/register",
+        json={
+            "email": "refresh@example.com",
+            "password": "StrongPassword123!",
+            "display_name": "Refresh User",
+        },
+    )
+    login_resp = await async_client.post(
+        "/auth/login",
+        json={"email": "refresh@example.com", "password": "StrongPassword123!"},
+    )
     refresh_token = login_resp.json()["refresh_token"]
 
-    response = await async_client.post("/auth/refresh", json={
-        "refresh_token": refresh_token
-    })
+    response = await async_client.post(
+        "/auth/refresh", json={"refresh_token": refresh_token}
+    )
     assert response.status_code == 200
     data = response.json()
     assert "access_token" in data

@@ -40,10 +40,13 @@ limiter = Limiter(key_func=get_remote_address, enabled=limiter_enabled)
 
 class RefreshRequest(BaseModel):
     """Schema for token refresh requests."""
+
     refresh_token: str
 
 
-@router.post("/register", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
+@router.post(
+    "/register", response_model=UserResponse, status_code=status.HTTP_201_CREATED
+)
 @limiter.limit("5/minute")
 async def register(
     request: Request,
@@ -67,7 +70,9 @@ async def register(
 
     display_name = sanitize_string(body.display_name, max_length=100)
     hashed = hash_password(body.password)
-    user = await repo.create(email=body.email, hashed_password=hashed, display_name=display_name)
+    user = await repo.create(
+        email=body.email, hashed_password=hashed, display_name=display_name
+    )
     return user
 
 

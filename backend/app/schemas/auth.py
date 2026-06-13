@@ -3,12 +3,13 @@ from datetime import datetime
 from uuid import UUID
 from pydantic import BaseModel, EmailStr, Field, ConfigDict, field_validator
 
+
 class RegisterRequest(BaseModel):
     email: EmailStr
     password: str = Field(min_length=8)
     display_name: str = Field(min_length=2, max_length=100)
 
-    @field_validator('password')
+    @field_validator("password")
     @classmethod
     def validate_password_strength(cls, v: str) -> str:
         if not re.search(r"[A-Z]", v):
@@ -19,20 +20,24 @@ class RegisterRequest(BaseModel):
             raise ValueError("Password must contain at least one special character")
         return v
 
-    @field_validator('display_name', mode='before')
+    @field_validator("display_name", mode="before")
     @classmethod
     def sanitize_display_name(cls, v: str) -> str:
         from app.core.sanitization import sanitize_string
+
         return sanitize_string(v, max_length=100)
+
 
 class LoginRequest(BaseModel):
     email: EmailStr
     password: str
 
+
 class TokenResponse(BaseModel):
     access_token: str
     refresh_token: str
     token_type: str
+
 
 class UserResponse(BaseModel):
     id: UUID

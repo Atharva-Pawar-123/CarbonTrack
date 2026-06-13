@@ -5,15 +5,18 @@ from httpx import AsyncClient
 @pytest.fixture
 async def auth_headers(async_client: AsyncClient):
     """Register and login to get an auth token for protected routes."""
-    await async_client.post("/auth/register", json={
-        "email": "emission@example.com",
-        "password": "TestPassword123!",
-        "display_name": "Emission User"
-    })
-    response = await async_client.post("/auth/login", json={
-        "email": "emission@example.com",
-        "password": "TestPassword123!"
-    })
+    await async_client.post(
+        "/auth/register",
+        json={
+            "email": "emission@example.com",
+            "password": "TestPassword123!",
+            "display_name": "Emission User",
+        },
+    )
+    response = await async_client.post(
+        "/auth/login",
+        json={"email": "emission@example.com", "password": "TestPassword123!"},
+    )
     token = response.json()["access_token"]
     return {"Authorization": f"Bearer {token}"}
 
@@ -27,29 +30,29 @@ SAMPLE_FOOTPRINT = {
         "flight_km_long": 0,
         "bus_km": 100,
         "metro_km": 50,
-        "motorbike_km": 0
+        "motorbike_km": 0,
     },
     "energy": {
         "electricity_kwh": 300,
         "gas_m3": 20,
         "lpg_cylinders": 0,
-        "region_grid_factor": 0.82
+        "region_grid_factor": 0.82,
     },
-    "diet": {
-        "diet_type": "omnivore"
-    },
+    "diet": {"diet_type": "omnivore"},
     "consumption": {
         "clothing_items": 3,
         "electronics_bought": 1,
-        "waste_recycling": "partial"
-    }
+        "waste_recycling": "partial",
+    },
 }
 
 
 @pytest.mark.asyncio
 async def test_calculate_footprint(async_client: AsyncClient, auth_headers):
     """Test submitting a footprint calculation via POST /footprint/."""
-    response = await async_client.post("/footprint/", json=SAMPLE_FOOTPRINT, headers=auth_headers)
+    response = await async_client.post(
+        "/footprint/", json=SAMPLE_FOOTPRINT, headers=auth_headers
+    )
     assert response.status_code == 200
     data = response.json()
     assert "id" in data

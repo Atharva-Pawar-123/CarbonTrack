@@ -3,11 +3,12 @@ from uuid import UUID
 from pydantic import BaseModel, ConfigDict, field_validator
 from app.constants import ECO_ACTIONS
 
+
 class LogActionRequest(BaseModel):
     action_id: str
     logged_date: date
 
-    @field_validator('action_id')
+    @field_validator("action_id")
     @classmethod
     def validate_action_id(cls, v: str) -> str:
         valid_ids = [a["id"] for a in ECO_ACTIONS]
@@ -15,12 +16,13 @@ class LogActionRequest(BaseModel):
             raise ValueError(f"action_id must be one of {valid_ids}")
         return v
 
-    @field_validator('logged_date')
+    @field_validator("logged_date")
     @classmethod
     def validate_logged_date(cls, v: date) -> date:
         if v > date.today():
             raise ValueError("logged_date cannot be in the future")
         return v
+
 
 class ActionLogResponse(BaseModel):
     id: UUID
@@ -30,6 +32,7 @@ class ActionLogResponse(BaseModel):
     logged_date: date
 
     model_config = ConfigDict(from_attributes=True)
+
 
 class ActionSummaryResponse(BaseModel):
     total_saved_kg: float

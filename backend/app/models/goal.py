@@ -3,6 +3,7 @@ from sqlalchemy import Column, String, DateTime, Float, Boolean, Text, ForeignKe
 from sqlalchemy.orm import relationship
 from app.core.database import Base
 
+
 class Goal(Base):
     __tablename__ = "goals"
 
@@ -13,8 +14,10 @@ class Goal(Base):
     description = Column(String(500), nullable=True)
     is_achieved = Column(Boolean, default=False, nullable=False)
     ai_plan = Column(Text, nullable=True)
-    
+
     created_at = Column(DateTime, server_default=func.now(), nullable=False)
-    updated_at = Column(DateTime, server_default=func.now(), onupdate=func.now(), nullable=False)
+    updated_at = Column(
+        DateTime, server_default=func.now(), onupdate=func.now(), nullable=False
+    )
 
     user = relationship("User", back_populates="goals")

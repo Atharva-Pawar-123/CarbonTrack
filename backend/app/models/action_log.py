@@ -3,6 +3,7 @@ from sqlalchemy import Column, String, DateTime, Float, Date, ForeignKey, Index,
 from sqlalchemy.orm import relationship
 from app.core.database import Base
 
+
 class ActionLog(Base):
     __tablename__ = "action_logs"
 
@@ -16,6 +17,4 @@ class ActionLog(Base):
 
     user = relationship("User", back_populates="action_logs")
 
-    __table_args__ = (
-        Index("ix_action_user_date", "user_id", "logged_date"),
-    )
+    __table_args__ = (Index("ix_action_user_date", "user_id", "logged_date"),)

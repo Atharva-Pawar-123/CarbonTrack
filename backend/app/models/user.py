@@ -3,6 +3,7 @@ from sqlalchemy import Column, String, DateTime, func
 from sqlalchemy.orm import relationship
 from app.core.database import Base
 
+
 class User(Base):
     __tablename__ = "users"
 
@@ -11,8 +12,14 @@ class User(Base):
     hashed_password = Column(String(255), nullable=False)
     display_name = Column(String(100), nullable=True)
     created_at = Column(DateTime, server_default=func.now(), nullable=False)
-    updated_at = Column(DateTime, server_default=func.now(), onupdate=func.now(), nullable=False)
+    updated_at = Column(
+        DateTime, server_default=func.now(), onupdate=func.now(), nullable=False
+    )
 
-    footprint_entries = relationship("FootprintEntry", back_populates="user", cascade="all, delete-orphan")
-    action_logs = relationship("ActionLog", back_populates="user", cascade="all, delete-orphan")
+    footprint_entries = relationship(
+        "FootprintEntry", back_populates="user", cascade="all, delete-orphan"
+    )
+    action_logs = relationship(
+        "ActionLog", back_populates="user", cascade="all, delete-orphan"
+    )
     goals = relationship("Goal", back_populates="user", cascade="all, delete-orphan")

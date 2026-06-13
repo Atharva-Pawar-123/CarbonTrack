@@ -1,16 +1,13 @@
-import pytest
 import pytest_asyncio
-from unittest.mock import patch
 from httpx import AsyncClient, ASGITransport
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, async_sessionmaker
 
+import os
+
+os.environ["TESTING"] = "1"
+
 from app.main import app
 from app.core.database import get_db, Base
-
-@pytest.fixture(autouse=True)
-def bypass_rate_limiting():
-    with patch("slowapi.Limiter._check_request_limit", return_value=None):
-        yield
 
 # ---------------------------------------------------------------------------
 # Use in-memory SQLite for fast, isolated tests
@@ -21,7 +18,11 @@ engine = create_async_engine(
     SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False}
 )
 TestingSessionLocal = async_sessionmaker(
-    autocommit=False, autoflush=False, bind=engine, class_=AsyncSession, expire_on_commit=False
+    autocommit=False,
+    autoflush=False,
+    bind=engine,
+    class_=AsyncSession,
+    expire_on_commit=False,
 )
 
 

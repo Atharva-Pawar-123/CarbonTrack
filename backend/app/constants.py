@@ -15,7 +15,7 @@ TRANSPORT_FACTORS: dict[str, float] = {
     "electric car": 0.053,
     "hybrid car": 0.111,
     "motorbike": 0.114,
-    "short-haul flight": 0.255, # RF multiplier applies in calc
+    "short-haul flight": 0.255,  # RF multiplier applies in calc
     "long-haul flight": 0.195,  # RF multiplier applies in calc
     "bus": 0.089,
     "metro/train": 0.041,
@@ -23,9 +23,9 @@ TRANSPORT_FACTORS: dict[str, float] = {
 
 # kg CO2e per unit
 ENERGY_FACTORS: dict[str, float] = {
-    "electricity_india": 0.82, # per kWh
-    "gas": 2.04,               # per m3
-    "lpg_cylinder": 29.0,      # per 14.2kg cylinder
+    "electricity_india": 0.82,  # per kWh
+    "gas": 2.04,  # per m3
+    "lpg_cylinder": 29.0,  # per 14.2kg cylinder
 }
 
 # kg CO2e per day
@@ -53,11 +53,23 @@ WASTE_MODIFIERS: dict[str, float] = {
 INDIA_MONTHLY_AVERAGE_KG: float = 190.0
 
 ECO_ACTIONS: list[dict] = [
-    {"id": "public_transport", "label": "Take public transport instead of driving", "co2e_saved_kg": 2.5},
+    {
+        "id": "public_transport",
+        "label": "Take public transport instead of driving",
+        "co2e_saved_kg": 2.5,
+    },
     {"id": "skip_meat", "label": "Skip meat for a day", "co2e_saved_kg": 2.7},
     {"id": "air_dry_laundry", "label": "Air-dry laundry", "co2e_saved_kg": 1.2},
-    {"id": "lights_off", "label": "Turn off lights and fans when leaving", "co2e_saved_kg": 0.5},
+    {
+        "id": "lights_off",
+        "label": "Turn off lights and fans when leaving",
+        "co2e_saved_kg": 0.5,
+    },
     {"id": "short_shower", "label": "Take a 5-minute shower", "co2e_saved_kg": 0.8},
     {"id": "plant_tree", "label": "Plant a tree", "co2e_saved_kg": 5.0},
-    {"id": "reusable_bag", "label": "Use a reusable shopping bag", "co2e_saved_kg": 0.2},
+    {
+        "id": "reusable_bag",
+        "label": "Use a reusable shopping bag",
+        "co2e_saved_kg": 0.2,
+    },
 ]
